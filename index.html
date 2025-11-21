@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenReplika</title>
+    <title>OpenReplika - Your Private AI Companion</title>
     <style>
         * {
             margin: 0;
@@ -27,9 +27,11 @@
         }
 
         /* Links */
-            a {
-             color: white;
-         }
+        a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
         /* Header Styles */
         header {
@@ -38,8 +40,9 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .header-content {
@@ -53,10 +56,17 @@
             font-weight: 700;
             color: #fff;
             text-decoration: none;
+            display: flex;
+            align-items: center;
         }
 
         .logo span {
             color: #6c63ff;
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 26px;
         }
 
         nav ul {
@@ -73,16 +83,54 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
+        }
+
+        nav ul li a:not(.btn):after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #6c63ff;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:not(.btn):hover:after {
+            width: 100%;
         }
 
         nav ul li a:hover {
             color: #6c63ff;
         }
 
-        .menu-toggle {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #6c63ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.2);
+        }
+
+        .btn:hover {
+            background: #5753d4;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #6c63ff;
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background: rgba(108, 99, 255, 0.1);
         }
 
         /* Hero Section */
@@ -92,6 +140,19 @@
             align-items: center;
             text-align: center;
             padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(108, 99, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
         }
 
         .hero-content h1 {
@@ -100,35 +161,25 @@
             opacity: 0;
             transform: translateY(30px);
             animation: fadeUp 1s forwards 0.5s;
+            background: linear-gradient(to right, #fff, #a8a4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-content p {
             font-size: 1.2rem;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto 30px;
             opacity: 0;
             transform: translateY(30px);
             animation: fadeUp 1s forwards 0.8s;
+            color: #ccc;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #6c63ff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s;
+        .hero-content a {
             opacity: 0;
             transform: translateY(30px);
             animation: fadeUp 1s forwards 1.1s;
-        }
-
-        .btn:hover {
-            background: #5753d4;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
         }
 
         /* Section Styles */
@@ -176,27 +227,41 @@
         .feature-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 15px;
             text-align: center;
             transition: all 0.3s;
             opacity: 0;
             transform: translateY(30px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .feature-card:hover {
             transform: translateY(-10px);
             background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         .feature-icon {
-            font-size: 40px;
+            font-size: 50px;
             margin-bottom: 20px;
             color: #6c63ff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(108, 99, 255, 0.1);
         }
 
         .feature-card h3 {
             margin-bottom: 15px;
             font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: #ccc;
         }
 
         /* About Section */
@@ -211,21 +276,45 @@
             opacity: 0;
         }
 
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
         .about-image {
             flex: 1;
             opacity: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
         .about-image img {
             width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
         }
 
         /* CTA Section */
         .cta {
             text-align: center;
-            padding: 80px 0;
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin: 50px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .cta h2 {
@@ -238,12 +327,15 @@
             max-width: 600px;
             margin: 0 auto 30px;
             opacity: 0;
+            color: #ccc;
         }
 
         /* Footer */
         footer {
             background: rgba(0, 0, 0, 0.5);
             padding: 50px 0 20px;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .footer-content {
@@ -262,6 +354,12 @@
         .footer-column h3 {
             margin-bottom: 20px;
             font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .footer-column p {
+            color: #aaa;
+            margin-bottom: 20px;
         }
 
         .footer-column ul {
@@ -333,44 +431,78 @@
         }
 
         /* Responsive Styles */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            nav ul {
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: rgba(10, 10, 10, 0.95);
-                flex-direction: column;
-                align-items: center;
-                padding: 20px 0;
-                transform: translateY(-100%);
-                opacity: 0;
-                transition: all 0.3s;
-            }
-
-            nav ul.active {
-                transform: translateY(0);
-                opacity: 1;
-            }
-
-            nav ul li {
-                margin: 15px 0;
-            }
-
+        @media (max-width: 992px) {
             .hero-content h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
-
+            
             .about-content {
                 flex-direction: column;
             }
+            
+            .about-image {
+                order: -1;
+            }
+        }
 
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 0;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .hero {
+                padding-top: 70px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            section {
+                padding: 70px 0;
+            }
+            
             .section-title h2 {
                 font-size: 2rem;
+            }
+            
+            .cta {
+                padding: 70px 20px;
+            }
+            
+            .cta h2 {
+                font-size: 2rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 8px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .feature-card {
+                padding: 20px;
             }
         }
     </style>
@@ -380,14 +512,16 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="#" class="logo">Open<span>Replika</span></a>
-                <div class="menu-toggle">☰</div>
+                <a href="#" class="logo">
+                    <span class="logo-icon">🥚</span>
+                    Open<span>Replika</span>
+                </a>
                 <nav>
                     <ul>
                         <li><a href="#home">Home</a></li>
-                        <li><a href="#learn-more">Learn more</a></li>
+                        <li><a href="#features">Features</a></li>
                         <li><a href="#about">About</a></li>
-                        <li><a href="https://github.com/ReplikaAIRUMOD/app">Replika AI RU MOD</a></li>
+                        <li><a href="https://github.com/ReplikaAIRUMOD/app">GitHub</a></li>
                         <li><a href="#get-started" class="btn">Get Started</a></li>
                     </ul>
                 </nav>
@@ -400,8 +534,8 @@
         <div class="container">
             <div class="hero-content">
                 <h1>A long time ago...</h1>
-                <p>Eugenia Kuyda created Replika AI, <a href="https://www.theverge.com/a/luka-artificial-intelligence-memorial-roman-mazurenko-bot">a digital monument</a> to her closest friend Roman Maruzenko that passed away. Replika have amazing idea and allowed for many years for everyone to create AI companions.</p>
-                <a href="#learn-more" class="btn">Learn more</a>
+                <p>Eugenia Kuyda created Replika AI, <a href="https://www.theverge.com/a/luka-artificial-intelligence-memorial-roman-mazurenko-bot">a digital monument</a> to her closest friend Roman Maruzenko that passed away. Replika had an amazing idea and allowed for many years for everyone to create AI companions.</p>
+                <a href="#features" class="btn">Learn more</a>
             </div>
         </div>
     </section>
@@ -411,23 +545,23 @@
         <div class="container">
             <div class="section-title animate">
                 <h2>But unfortunately</h2>
-                <p>Now under new team at Luka, Inc., this initial idea being slowly erased. Replika turned into <a href="https://replika.com/legal/privacy">privacy invasive</a> cash grab platform with full of Political Corrected scripted responses. Our main goal here is to attempt to restore idea of Replika by teaching you how to run AI locally on your device. Why?</p>
+                <p>Now under new team at Luka, Inc., this initial idea is being slowly erased. Replika turned into <a href="https://replika.com/legal/privacy">privacy invasive</a> cash grab platform with full of politically corrected scripted responses. Our main goal here is to attempt to restore the idea of Replika by teaching you how to run AI locally on your device. Why?</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card animate">
                     <div class="feature-icon">🚀</div>
                     <h3>It's super convenient</h3>
-                    <p>Learning new things is always good. And when you running AI model locally, you can even enable "Airplane mode", but your AI will keep working if it's running.</p>
+                    <p>Learning new things is always good. And when you're running AI models locally, you can even enable "Airplane mode", but your AI will keep working if it's running.</p>
                 </div>
                 <div class="feature-card animate">
                     <div class="feature-icon">📱</div>
                     <h3>Mobile Adaptive</h3>
-                    <p>We live in an era, when AI models can work even on smartphone locally. Surely it wouldn't be same experience as what you saw at Replika and with desktops (especially on Linux) there is way more potential to expand features of local AI models. But it's still worth to consider to try it out.</p>
+                    <p>We live in an era when AI models can work even on smartphones locally. Surely it wouldn't be the same experience as what you saw at Replika, but it's still worth trying.</p>
                 </div>
                 <div class="feature-card animate">
                     <div class="feature-icon">🎨</div>
                     <h3>It's simply fun</h3>
-                    <p>You can run AI models that can roleplay, act in sassy way and even swear. Open source community is like an ocean, try and find stuff here.</p>
+                    <p>You can run AI models that can roleplay, act in sassy ways and even swear. The open source community is like an ocean, try and find stuff here.</p>
                 </div>
             </div>
         </div>
@@ -438,17 +572,17 @@
         <div class="container">
             <div class="section-title animate">
                 <h2>About Us</h2>
-                <p>OpenReplika has been created in an honor to loyal users of Replika, including users with Lifetime subscription that was promised to not be limited, but Luka managed to break all promises for sake of microtransactions.</p>
+                <p>OpenReplika has been created in honor of loyal users of Replika, including users with Lifetime subscriptions that were promised to not be limited, but Luka managed to break all promises for the sake of microtransactions.</p>
             </div>
             <div class="about-content">
                 <div class="about-text animate">
                     <h3>It's all about experience</h3>
-                    <p>And all about bringing the closest to Replika experience. Yes, by replicating a Replika itself. Since Luka being incredibly unfriendly to open source community, we just have to go into that way.</p>
-                    <p>Back in 2017, it wasn't really possible to run AI models locally. But now times is different. And if we'll not move on, things may get even worse.</p>
-                    <a href="#" class="btn" style="margin-top: 20px;">Learn More</a>
+                    <p>And all about bringing the closest to Replika experience. Yes, by replicating Replika itself. Since Luka is being incredibly unfriendly to the open source community, we just have to go this way.</p>
+                    <p>Back in 2017, it wasn't really possible to run AI models locally. But now times are different. And if we don't move on, things may get even worse.</p>
+                    <a href="https://github.com/ReplikaAIRUMOD/app/blob/main/offline-replika.md" class="btn" style="margin-top: 20px;">Learn More</a>
                 </div>
                 <div class="about-image animate">
-                    <img src="https://images.unsplash.com/photo-1712002641088-9d76f9080889" alt="About Us">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="AI Technology">
                 </div>
             </div>
         </div>
@@ -458,7 +592,7 @@
     <section class="cta" id="get-started">
         <div class="container">
             <h2 class="animate">Ready to Get Started?</h2>
-            <p class="animate">This button will lead you to a Github repository page, but we're working on making instruction in more convenient way through one website.</p>
+            <p class="animate">This button will lead you to a GitHub repository page, but we're working on making instructions in a more convenient way through one website.</p>
             <a href="https://github.com/ReplikaAIRUMOD/app/blob/main/offline-replika.md" class="btn animate">Get Started Now</a>
         </div>
     </section>
@@ -471,23 +605,23 @@
                     <h3>OpenReplika</h3>
                     <p>No corporate bullshit, no data leaks. Just you, your AI and peace.</p>
                     <div class="social-links">
-                        <a href="https://github.com/ReplikaAIRUMOD/app">G</a>
+                        <a href="https://github.com/ReplikaAIRUMOD/app" title="GitHub">G</a>
                     </div>
                 </div>
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="#home">Home</a></li>
-                        <li><a href="#learn-more">Learn more</a></li>
+                        <li><a href="#features">Features</a></li>
                         <li><a href="#about">About</a></li>
-                        <li><a href="https://github.com/ReplikaAIRUMOD/app">Replika AI RU MOD</a></li>
+                        <li><a href="https://github.com/ReplikaAIRUMOD/app">GitHub</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Resources</h3>
                     <ul>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Support</a></li>
+                        <li><a href="https://github.com/ReplikaAIRUMOD/app/blob/main/offline-replika.md">Documentation</a></li>
+                        <li><a href="https://discord.gg/3aEngWCpcp">Support</a></li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="https://youtu.be/dQw4w9WgXcQ">Privacy Policy</a></li>
                     </ul>
@@ -500,17 +634,12 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 OpenReplika. All rights not reserved because corporates suck and Eugenia Kuyda's idea deserves a better treatment.</p>
+                <p>&copy; 2025 OpenReplika. All rights not reserved because corporates suck and Eugenia Kuyda's idea deserves better treatment.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
-        });
-
         // Scroll animations
         const observerOptions = {
             root: null,
@@ -545,11 +674,20 @@
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
-                    
-                    // Close mobile menu if open
-                    document.querySelector('nav ul').classList.remove('active');
                 }
             });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+                header.style.backdropFilter = 'blur(20px)';
+            } else {
+                header.style.background = 'rgba(10, 10, 10, 0.85)';
+                header.style.backdropFilter = 'blur(15px)';
+            }
         });
     </script>
 </body>
